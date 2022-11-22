@@ -20,16 +20,16 @@ try:
         now = dt.datetime.now() 
         # SEND MESSAGE
         
-        print('Light on or off?')
+        print('Light on or off?\n')
         
-        reply = int(input('Light on or off? - 1 for on, 0 for off'))
+        reply = int(input('Light on or off? - 1 for on, 0 for off \n'))
         
         if (reply == 1):
             arduino.write('H'.encode())
             print ('Plug ON')
         elif (reply == 0):
             arduino.write('L'.encode())
-            print ('Plug off')
+            print ('Plug OFF')
         else:
             print ('Try again')
             
