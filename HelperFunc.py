@@ -4,7 +4,7 @@ def get_ESP32_port():
     port = list(list_ports.comports())
     for p in port:
         print(p.device)
-    print(port.pop().device)
+    #print(port.pop().device)
     return port.pop().device
 
 def handle_response_code(response):
