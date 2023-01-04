@@ -24,7 +24,6 @@ def get_real_price_now ():
                'Content-Type': 'application/json',
                'Host': 'apidatos.ree.es'}
     params = {'start_date': dt_string_start, 'end_date': dt_string_end, 'time_trunc': 'hour'}
-    #params = {'start_date': dt_string_start, 'time_trunc': 'hour'}
 
     response = requests.get(endpoint + get_archives, headers=headers, params=params)
 
@@ -37,9 +36,3 @@ def get_real_price_now ():
     print(values[0]['value'])
 
 #get_real_price_now ()
-
-
-
-
-
-
