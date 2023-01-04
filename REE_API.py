@@ -6,6 +6,9 @@ import json
 #import matplotlib.pyplot as plt
 from datetime import date, datetime, timedelta
 
+#Helper Functions
+from HelperFunc import handle_response_code
+
 def get_real_price_now ():
     # datetime object containing current date and time
     now = datetime.now()
@@ -25,9 +28,17 @@ def get_real_price_now ():
 
     response = requests.get(endpoint + get_archives, headers=headers, params=params)
 
-    print(response)
+    handle_response_code(response)
+
+    json = response.json()
+
+    spot_market_prices = json['included'][0]
+    values = spot_market_prices['attributes']['values']
+    print(values[0]['value'])
 
 get_real_price_now ()
+
+
 
 
 
