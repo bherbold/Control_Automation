@@ -10,28 +10,26 @@ import datetime as dt
 import re
 import csv
 
+import HelperFunc
+
 # creating communications object using Serial
-arduino = serial.Serial('/dev/cu.usbserial-14110', 115200, timeout=3)
+#arduino = serial.Serial('/dev/cu.usbserial-14330', 115200, timeout=3)
+arduino = serial.Serial(str(HelperFunc.get_ESP32_port()), 115200, timeout=3)
+
 print("Starting!")
 
 # try-except-finally loop for data acquisition
 try:
+
+    row = ["Temperature", "Humidity ","Costs"]
+    with open('dataset1.csv', 'w', newline='') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerow(row)
+        csvFile.close()
+
     while True:
         now = dt.datetime.now()
         # SEND MESSAGE
-
-        print('Light on or off?')
-
-        reply = int(input('Light on or off? - 1 for on, 0 for off'))
-
-        if (reply == 1):
-            arduino.write('H'.encode())
-            print('Plug ON')
-        elif (reply == 0):
-            arduino.write('L'.encode())
-            print('Plug off')
-        else:
-            print('Try again')
 
         # READ DATA
         # Check if there is new info from the Arduino and read it
@@ -53,7 +51,7 @@ try:
             # store date and readings (change them to float!) into a list
             row = [now, float(v1), float(v2)]
             # save reading row into the csv file. File needs to be open with "a" (append) mode.
-            with open('Test_Control.csv', 'a', newline='') as csvFile:
+            with open('dataset1.csv', 'a', newline='') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(row)
                 csvFile.close()
