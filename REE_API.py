@@ -36,7 +36,7 @@ def get_real_price_now ():
     values = spot_market_prices['attributes']['values']
     print(values[0]['value'])
 
-get_real_price_now ()
+#get_real_price_now ()
 
 
 
