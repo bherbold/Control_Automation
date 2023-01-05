@@ -21,8 +21,23 @@ print("Starting!")
 # try-except-finally loop for data acquisition
 try:
 
-    row = ["Temperature", "Humidity ","Costs"]
-    with open('dataset1.csv', 'w', newline='') as csvFile:
+    # SEND MESSAGE
+
+    print('Light on or off?')
+
+    reply = 3 #int(input('Light on or off? - 1 for on, 0 for off'))
+
+    if (reply == 1):
+        arduino.write('H'.encode())
+        print('Plug ON')
+    elif (reply == 0):
+        arduino.write('L'.encode())
+        print('Plug off')
+    else:
+        print('Try again')
+
+    row = ["TimeStamp", "Power", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature"]
+    with open('dataset2.csv', 'w', newline='') as csvFile:
         writer = csv.writer(csvFile)
         writer.writerow(row)
         csvFile.close()
@@ -46,16 +61,16 @@ try:
         # if data has been read, print and save it
         if data:
             # strip data string into 2, 3 or as many different values for each reading
-            [v1, v2] = re.findall(pattern=r"[-+]?\d*\.\d+|[-+]?\d+",
+            [power, current, sauna_temp, sauna_humidity, steam, water_temp] = re.findall(pattern=r"[-+]?\d*\.\d+|[-+]?\d+",
                                   string=data)  # to understand pattern: https://regex101.com/
             # store date and readings (change them to float!) into a list
-            row = [now, float(v1), float(v2)]
+            row = [now, float(power), float(current), float(sauna_temp), float(sauna_humidity), float(steam), float(water_temp)]
             # save reading row into the csv file. File needs to be open with "a" (append) mode.
-            with open('dataset1.csv', 'a', newline='') as csvFile:
+            with open('dataset2.csv', 'a', newline='') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(row)
                 csvFile.close()
-                print(row)
+                #print(row)
         else:
             print('No data is being collected')
 
