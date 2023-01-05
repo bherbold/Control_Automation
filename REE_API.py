@@ -64,25 +64,34 @@ def get_real_price_day ():
 
     spot_market_prices = json['included'][0]
     values = spot_market_prices['attributes']['values']
-    print(values)
-#get_real_price_now ()
-#get_real_price_day ()
 
-def calCosts (demand_kw,priceData,priceDeltahour):
+    for t in values:
+        t['datetime'] = datetime.fromisoformat(t['datetime'])
+
+    print(values)
+    return values
+#get_real_price_now ()
+pr = get_real_price_day ()
+
+def calCosts (demand_kw,priceData,timeDeltaseconds):
     """
 
     :param demand_kw: Demand in KW
     :param priceData: Array from API with each hour as an entry (should be 24 entries)
-    :param priceDeltahour: 15 min = 1/4 , 10min = 1/6 ...
+    :param priceDeltahour: diff in seconds from wo timeperiods
     :return: Price to pay
     """
     now = datetime.now()
+    print("now: " , now)
+    #print(value['datetime'].hour)
 
     price = 0;
 
     for value in priceData:
 
-        if(value['datetime'] == now):
+        if(value['datetime'].hour == now.hour):
 
-            price = value['value']
-    return price * demand_kw * priceDeltahour
+            price = value['value']/1000 # Price per MWh divided by 1000 for €/kwh
+    return [price * demand_kw * timeDeltaseconds/3600, price]
+
+#print(calCosts (8,pr,1000))

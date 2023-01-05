@@ -11,12 +11,16 @@ import re
 import csv
 
 import HelperFunc
+import REE_API as RAPI
 
 # creating communications object using Serial
 #arduino = serial.Serial('/dev/cu.usbserial-14330', 115200, timeout=3)
 arduino = serial.Serial(str(HelperFunc.get_ESP32_port()), 115200, timeout=3)
 
 print("Starting!")
+
+preTime = dt.datetime.now()
+priceList = RAPI.get_real_price_day() # store values from Price API
 
 # try-except-finally loop for data acquisition
 try:
@@ -36,7 +40,7 @@ try:
     else:
         print('Try again')
 
-    row = ["TimeStamp", "Power", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature"]
+    row = ["TimeStamp", "Power_W", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature", "Cost", "Price_EUR_kWh"]
     with open('dataset2.csv', 'w', newline='') as csvFile:
         writer = csv.writer(csvFile)
         writer.writerow(row)
@@ -44,6 +48,12 @@ try:
 
     while True:
         now = dt.datetime.now()
+        timeDiff = ((now - preTime).total_seconds())
+
+        #Update Price array when new day starts
+        if now.hour == 0:
+            priceList = RAPI.get_real_price_day()
+
         # SEND MESSAGE
 
         # READ DATA
@@ -64,7 +74,8 @@ try:
             [power, current, sauna_temp, sauna_humidity, steam, water_temp] = re.findall(pattern=r"[-+]?\d*\.\d+|[-+]?\d+",
                                   string=data)  # to understand pattern: https://regex101.com/
             # store date and readings (change them to float!) into a list
-            row = [now, float(power), float(current), float(sauna_temp), float(sauna_humidity), float(steam), float(water_temp)]
+            row = [now, float(power), float(current), float(sauna_temp), float(sauna_humidity), float(steam), float(water_temp),
+                   float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[0]), float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[1])]
             # save reading row into the csv file. File needs to be open with "a" (append) mode.
             with open('dataset2.csv', 'a', newline='') as csvFile:
                 writer = csv.writer(csvFile)
@@ -74,6 +85,7 @@ try:
         else:
             print('No data is being collected')
 
+        preTime = now
 # handling KeyboardInterrupt by the end-user (CTRL+C)
 except KeyboardInterrupt:
     # closing communications port
