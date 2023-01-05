@@ -48,7 +48,7 @@ try:
 
     while True:
         now = dt.datetime.now()
-        timeDiff = ((now - preTime).total_seconds())
+        timeDiff = ((now - preTime).total_seconds()) # needed for Cost calculation
 
         #Update Price array when new day starts
         if now.hour == 0:

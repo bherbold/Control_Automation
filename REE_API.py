@@ -10,6 +10,10 @@ from datetime import date, datetime, timedelta
 from HelperFunc import handle_response_code
 
 def get_real_price_now ():
+    """
+
+    :return: Price for this hour in EURO per KWH
+    """
     # datetime object containing current date and time
     now = datetime.now()
     # Time formate for REE API
@@ -33,7 +37,8 @@ def get_real_price_now ():
 
     spot_market_prices = json['included'][0]
     values = spot_market_prices['attributes']['values']
-    print(values[0]['value'])
+    #print(values[0]['value'])
+    return values[0]['value']/1000 # 1/1000 for price per KWH
 
 def get_real_price_day ():
     # datetime object containing current date and time
@@ -71,7 +76,7 @@ def get_real_price_day ():
     print(values)
     return values
 #get_real_price_now ()
-pr = get_real_price_day ()
+#pr = get_real_price_day ()
 
 def calCosts (demand_kw,priceData,timeDeltaseconds):
     """
