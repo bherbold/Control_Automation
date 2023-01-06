@@ -41,8 +41,8 @@ def dataManagement(arduino):
     # try-except-finally loop for data acquisition
     try:
 
-        row = ["TimeStamp", "Power_W", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature", "Cost", "Price_EUR_kWh"]
-        with open('2hourTest.csv', 'w', newline='') as csvFile:
+        row = ["TimeStamp","ON/OFF", "Power_W", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature", "Cost", "Price_EUR_kWh"]
+        with open('TestData.csv', 'w', newline='') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerow(row)
             csvFile.close()
@@ -74,11 +74,15 @@ def dataManagement(arduino):
                 # strip data string into 2, 3 or as many different values for each reading
                 [power, current, sauna_temp, sauna_humidity, steam, water_temp] = re.findall(pattern=r"[-+]?\d*\.\d+|[-+]?\d+",
                                       string=data)  # to understand pattern: https://regex101.com/
+                onOff = 0
+                if float(power) > 500:
+                    onOff = 1
+
                 # store date and readings (change them to float!) into a list
-                row = [now, float(power), float(current), float(sauna_temp), float(sauna_humidity), float(steam), float(water_temp),
+                row = [now, onOff,float(power), float(current), float(sauna_temp), float(sauna_humidity), float(steam), float(water_temp),
                        float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[0]), float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[1])]
                 # save reading row into the csv file. File needs to be open with "a" (append) mode.
-                with open('2hourTest.csv', 'a', newline='') as csvFile:
+                with open('TestData.csv', 'a', newline='') as csvFile:
                     writer = csv.writer(csvFile)
                     writer.writerow(row)
                     csvFile.close()
