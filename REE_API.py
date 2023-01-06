@@ -73,7 +73,7 @@ def get_real_price_day ():
     for t in values:
         t['datetime'] = datetime.fromisoformat(t['datetime'])
 
-    print(values)
+    #print(values)
     return values
 #get_real_price_now ()
 #pr = get_real_price_day ()
@@ -87,7 +87,7 @@ def calCosts (demand_kw,priceData,timeDeltaseconds):
     :return: Price to pay
     """
     now = datetime.now()
-    print("now: " , now)
+    #print("now: " , now)
     #print(value['datetime'].hour)
 
     price = 0;

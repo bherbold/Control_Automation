@@ -5,7 +5,7 @@ import serial
 import datetime as dt
 import re
 import HelperFunc
-
+import asyncio
 import time
 
 arduino = serial.Serial(str(HelperFunc.get_ESP32_port()), 115200, timeout=3)
