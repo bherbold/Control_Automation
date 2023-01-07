@@ -37,6 +37,7 @@ def dataManagement(arduino):
 
     preTime = dt.datetime.now()
     priceList = RAPI.get_real_price_day() # store values from Price API
+    priceCheck = False # was the price already checked his hour?
 
     # try-except-finally loop for data acquisition
     try:
@@ -52,8 +53,12 @@ def dataManagement(arduino):
             timeDiff = ((now - preTime).total_seconds()) # needed for Cost calculation
 
             #Update Price array when new day starts
-            if now.hour == 0:
+            if now.hour == 0 and priceCheck == False:
                 priceList = RAPI.get_real_price_day()
+                priceCheck = True
+            elif now.hour != 0:
+                priceCheck = False
+
 
             # SEND MESSAGE
 

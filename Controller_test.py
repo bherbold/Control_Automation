@@ -42,7 +42,7 @@ def relayControlTest(arduino):
                 preSteam = float(steam)
                 arduino.write('H'.encode())
                 print('Plug ON (auto)')
-            if (float(steam)-float(preSteam) >= 3) or (float(water_temp) >= 47) and (float(onOff) == 1.0):
+            if (float(steam)-float(preSteam) >= 3) or (float(water_temp) >= 44) and (float(onOff) == 1.0):
 
                 arduino.write('L'.encode())
                 time.sleep(20)
