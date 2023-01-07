@@ -1,4 +1,5 @@
 import Controller as CON
+import Controller_test as CON_test
 import Data_Management as DM
 import threading
 import serial
@@ -15,9 +16,12 @@ arduino = serial.Serial(str(HelperFunc.get_ESP32_port()), 115200, timeout=3)
 # background
 
 def Main():
+
+
     background = DM.AsyncWrite(arduino)
     background.start()
-    CON.relayControl(arduino)
+    #CON.relayControl(arduino)
+    CON_test.relayControlTest(arduino)
     # wait till the background thread is done
     background.join()
     print("Waited until thread was complete")

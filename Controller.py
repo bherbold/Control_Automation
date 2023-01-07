@@ -17,6 +17,7 @@ def relayControl(arduino):
     try:
         print("enerter Controller")
         # SEND MESSAGE
+        arduino.write('L'.encode())
         while(True):
             print('Light on or off?')
 
