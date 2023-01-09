@@ -38,11 +38,12 @@ def dataManagement(arduino):
     preTime = dt.datetime.now()
     priceList = RAPI.get_real_price_day() # store values from Price API
     priceCheck = False # was the price already checked his hour?
+    T_set = 0
 
     # try-except-finally loop for data acquisition
     try:
 
-        row = ["TimeStamp","ON/OFF", "Power_W", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature", "Cost", "Price_EUR_kWh"]
+        row = ["TimeStamp","ON/OFF", "Power_W", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature", "Cost", "Price_EUR_kWh", "T_set"]
         with open('TestData.csv', 'w', newline='') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerow(row)
@@ -61,6 +62,14 @@ def dataManagement(arduino):
 
 
             # SEND MESSAGE
+
+            with open('UserTemperature.csv', 'r') as file:
+                # Create a CSV reader
+                reader = csv.reader(file)
+
+                for row in reader:
+                    # Get the value from the second column (index 1)
+                    T_set = float(row[0])
 
             # READ DATA
             # Check if there is new info from the Arduino and read it
@@ -82,7 +91,7 @@ def dataManagement(arduino):
 
                 # store date and readings (change them to float!) into a list
                 row = [now, float(onOff),float(power), float(current), float(sauna_temp), float(sauna_humidity), float(steam), float(water_temp),
-                       float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[0]), float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[1])]
+                       float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[0]), float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[1]),T_set]
                 # save reading row into the csv file. File needs to be open with "a" (append) mode.
                 with open('TestData.csv', 'a', newline='') as csvFile:
                     writer = csv.writer(csvFile)

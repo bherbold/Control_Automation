@@ -29,7 +29,7 @@ def PID(arduino, max_on):
 
         T_set = 50
         K_p = 10 # P Gain
-        K_d = -4000 # D Gain
+        K_d = -5000 # D Gain
 
         time.sleep(1)
 
