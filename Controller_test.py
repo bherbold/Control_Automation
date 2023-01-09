@@ -13,6 +13,7 @@ import time
 
 import HelperFunc
 import REE_API as RAPI
+import coldStart
 
 def relayControlTest(arduino):
     try:
@@ -36,17 +37,25 @@ def relayControlTest(arduino):
                     steam = row[6]
                     onOff = row[1]
                     water_temp = row[7]
+            if float(water_temp) <= 22 and float(sauna_temp) <= 25 :
+                # cold start
+                coldStart.coldStart(arduino, 27, 20)
 
-            if float(sauna_temp) <= 45 and (float(onOff) == 0):
+            elif float(sauna_temp) <= 50 and (float(onOff) == 0):
 
                 preSteam = float(steam)
                 arduino.write('H'.encode())
                 print('Plug ON (auto)')
-            if (float(steam)-float(preSteam) >= 3) or (float(water_temp) >= 44) and (float(onOff) == 1.0):
+                time.sleep(3)
+                arduino.write('L'.encode())
+                print('Plug off (auto)')
+                time.sleep(15)
+            elif ((float(steam)-float(preSteam) >= 3) and (float(onOff) == 1.0)) or ((float(water_temp) >= 44) and (float(onOff) == 1.0)) :
 
                 arduino.write('L'.encode())
-                time.sleep(20)
                 print('Plug off (auto)')
+                time.sleep(15)
+
 
             #print('Light on or off?')
 

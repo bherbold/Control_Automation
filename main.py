@@ -20,8 +20,8 @@ def Main():
 
     background = DM.AsyncWrite(arduino)
     background.start()
-    #CON.relayControl(arduino)
-    CON_test.relayControlTest(arduino)
+    CON.relayControl(arduino)
+    #CON_test.relayControlTest(arduino)
     # wait till the background thread is done
     background.join()
     print("Waited until thread was complete")
