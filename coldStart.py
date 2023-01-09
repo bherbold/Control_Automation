@@ -24,7 +24,7 @@ def coldStart (arduino, startTemp, startupTime):
 
 
 
-    while (time_diff <= startupTime and float(water_temp) <= startTemp and steam_diff <= 5):
+    while (time_diff <= startupTime and float(water_temp) <= startTemp and steam_diff <= 1):
 
 
 
@@ -49,6 +49,3 @@ def coldStart (arduino, startTemp, startupTime):
             started = True
 
 
-    arduino.write('L'.encode())
-    print('Plug Off (Startup)')
-    time.sleep(10)

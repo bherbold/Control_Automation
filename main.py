@@ -1,11 +1,13 @@
 import Controller as CON
 import Controller_test as CON_test
+import Controller_main as CON_main
 import Data_Management as DM
 import threading
 import serial
 import datetime as dt
 import re
 import HelperFunc
+import UserInput as UI
 
 import time
 
@@ -20,8 +22,12 @@ def Main():
 
     background = DM.AsyncWrite(arduino)
     background.start()
-    CON.relayControl(arduino)
+
+    #UserInput = UI.AsyncWrite()
+    #UserInput.start()
+    #CON.relayControl(arduino)
     #CON_test.relayControlTest(arduino)
+    CON_main.Controller_main(arduino)
     # wait till the background thread is done
     background.join()
     print("Waited until thread was complete")
