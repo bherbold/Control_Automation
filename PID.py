@@ -29,7 +29,8 @@ def PID(arduino, max_on):
 
         T_set = 50
         K_p = 10 # P Gain
-        K_d = -5000 # D Gain f
+        #K_d = -5000 # D Gain f
+        K_d = -700  # D Gain f
 
         time.sleep(1)
 
@@ -77,14 +78,16 @@ def PID(arduino, max_on):
             D = (sauna_temp - preTemp)/(time_diff)
 
             # Seconds on (PD addition)
-            on_time = min((T_sauna_diff * K_p)+(T_sauna_diff * D * K_d), max_on)  # limited to max_on seconds
+            #on_time = min((T_sauna_diff * K_p)+(T_sauna_diff * D * K_d), max_on)  # limited to max_on seconds
+            on_time = min((T_sauna_diff * K_p) + (D * K_d), max_on)  # limited to max_on seconds
             print("On Seconds: ", on_time)
             print("T_set: ", T_set)
             print("T_sauna: ", sauna_temp)
             print("T_diff: ", T_sauna_diff)
             print("K_p * T_diff: ", (T_sauna_diff * K_p))
             print("D: ", D)
-            print("D * K_d * T_diff: ", (T_sauna_diff * D * K_d))
+            #print("D * K_d * T_diff: ", (T_sauna_diff * D * K_d))
+            print("D * K_d: ", (D * K_d))
 
 
             arduino.write('H'.encode())
