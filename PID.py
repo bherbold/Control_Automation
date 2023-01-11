@@ -21,7 +21,7 @@ def PID(arduino, max_on):
     try:
         print("enter PID")
         # SEND MESSAGE
-        arduino.write('L'.encode())
+        arduino.write('H'.encode())
         preSteam = 0
         preTemp = 0
         pre_water_temp = 0
@@ -83,17 +83,18 @@ def PID(arduino, max_on):
             print("On Seconds: ", on_time)
             print("T_set: ", T_set)
             print("T_sauna: ", sauna_temp)
-            print("T_diff: ", T_sauna_diff)
+            print("Temp_diff: ", T_sauna_diff)
+            print("Time_diff: ", time_diff)
             print("K_p * T_diff: ", (T_sauna_diff * K_p))
             print("D: ", D)
             #print("D * K_d * T_diff: ", (T_sauna_diff * D * K_d))
             print("D * K_d: ", (D * K_d))
 
 
-            arduino.write('H'.encode())
+            arduino.write('L'.encode())
             print('Plug ON (PID)')
             time.sleep(max(on_time, 0))
-            arduino.write('L'.encode())
+            arduino.write('H'.encode())
             print('Plug OFF (PID)')
             time.sleep(30) # settle time always 10 sec
 
@@ -106,6 +107,7 @@ def PID(arduino, max_on):
             preSteam = steam
             preTemp = sauna_temp
             pre_water_temp = water_temp
+            t_pre = t_now
 
 
 

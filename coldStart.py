@@ -43,7 +43,7 @@ def coldStart (arduino, startTemp, startupTime):
         steam_diff = float(steam) - steam_start
         t_now = datetime.datetime.now()
         time_diff = (t_now - t_start).total_seconds()
-        arduino.write('H'.encode())
+        arduino.write('L'.encode())
         if started == False:
             print('Plug ON (StartUp)')
             started = True

@@ -54,10 +54,10 @@ def Controller_main(arduino):
                     steam = row[6]
                     onOff = row[1]
                     water_temp = row[7]
-            if float(water_temp) <= 52 and float(sauna_temp) <= 27 :
+            if float(water_temp) <= 40 and float(sauna_temp) <= 27 :
                 # cold start
                 coldStart.coldStart(arduino, 52, 20)
-                arduino.write('L'.encode())
+                arduino.write('H'.encode())
                 print('Plug Off (Startup)')
                 time.sleep(10)
 
