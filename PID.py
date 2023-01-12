@@ -109,9 +109,21 @@ def PID(arduino, max_on):
             pre_water_temp = water_temp
             t_pre = t_now
 
-
-
-
+            # test going up and down between 50 and 47
+            """   
+            if sauna_temp >= 49.9:
+                with open('UserTemperature.csv', 'w') as file:
+                    row = [47]
+                    writer = csv.writer(file)
+                    writer.writerow(row)
+                    file.close()
+            elif sauna_temp <= 47:
+                with open('UserTemperature.csv', 'w') as file:
+                    row = [50]
+                    writer = csv.writer(file)
+                    writer.writerow(row)
+                    file.close()
+            """
 
     # handling KeyboardInterrupt by the end-user (CTRL+C)
     except KeyboardInterrupt:

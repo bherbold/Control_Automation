@@ -1,0 +1,25 @@
+2023-01-11
+{'price': 55.41, 'emissions': 0, 'booked': 1, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 55.67, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 56.45, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 60.46, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 61.32, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 61.48, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 63.15, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 68.4, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 85.45, 'emissions': 0, 'booked': -1, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 86.19, 'emissions': 0, 'booked': -1, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 63.54, 'emissions': 0, 'booked': -1, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 56.38, 'emissions': 0, 'booked': 0, 'client': '', 'mode': ''}
+{'price': 54.25, 'emissions': 0, 'booked': 0, 'client': '', 'mode': ''}
+{'price': 55.41, 'emissions': 0, 'booked': 1, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 55.67, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 56.45, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 60.46, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 61.32, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 61.48, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 63.15, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 68.4, 'emissions': 0, 'booked': 0, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 85.45, 'emissions': 0, 'booked': -1, 'client': 'jose_luz', 'mode': 'Eco'}
+{'price': 86.19, 'emissions': 0, 'booked': -1, 'client': 'jose_luz', 'mode': 'Regular'}
+{'price': 63.54, 'emissions': 0, 'booked': -1, 'client': 'jose_luz', 'mode': 'Eco'}

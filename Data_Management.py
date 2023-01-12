@@ -13,6 +13,7 @@ import threading
 
 import HelperFunc
 import REE_API as RAPI
+import bookingManager as BM
 
 # Writing the base class 'Thread'
 class AsyncWrite(threading.Thread):
@@ -42,9 +43,8 @@ def dataManagement(arduino):
 
     # try-except-finally loop for data acquisition
     try:
-
         row = ["TimeStamp","ON/OFF", "Power_W", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature", "Cost", "Price_EUR_kWh", "T_set"]
-        with open('TestData.csv', 'w', newline='') as csvFile:
+        with open('DataLogger.csv', 'w', newline='') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerow(row)
             csvFile.close()
@@ -60,9 +60,15 @@ def dataManagement(arduino):
             elif now.hour != 0:
                 priceCheck = False
 
+            # Get the latest Booking Schedule
+            T_set = BM.update_bookings(now.hour, 50, 47, 40)
 
-            # SEND MESSAGE
-
+            with open('UserTemperature.csv', 'w') as file:
+                row = [T_set]
+                writer = csv.writer(file)
+                writer.writerow(row)
+                file.close()
+            """
             with open('UserTemperature.csv', 'r') as file:
                 # Create a CSV reader
                 reader = csv.reader(file)
@@ -70,7 +76,7 @@ def dataManagement(arduino):
                 for row in reader:
                     # Get the value from the second column (index 1)
                     T_set = float(row[0])
-
+            """
             # READ DATA
             # Check if there is new info from the Arduino and read it
             #print("start read")
@@ -93,7 +99,7 @@ def dataManagement(arduino):
                 row = [now, float(onOff),float(power), float(current), float(sauna_temp), float(sauna_humidity), float(steam), float(water_temp),
                        float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[0]), float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[1]),T_set]
                 # save reading row into the csv file. File needs to be open with "a" (append) mode.
-                with open('TestData.csv', 'a', newline='') as csvFile:
+                with open('DataLogger.csv', 'a', newline='') as csvFile:
                     writer = csv.writer(csvFile)
                     writer.writerow(row)
                     csvFile.close()
