@@ -5,17 +5,11 @@ Created on Friday 6th January 2023
 @authors: José Luz, Bendiks Herbold
 """
 # importing libraries
-import serial
-import datetime as dt
-import re
 import csv
 import time
 
-import HelperFunc
-import REE_API as RAPI
-import coldStart
-import PID
-import datetime
+from Controller import coldStart, PID
+
 
 def Controller_main(arduino):
     try:
@@ -28,7 +22,7 @@ def Controller_main(arduino):
         t_pre = 0
         time.sleep(1)
 
-        with open('lastReading.csv', 'r') as file:
+        with open('../Control_Automation/Data_Management/lastReading.csv', 'r') as file:
             # Create a CSV reader
             reader = csv.reader(file)
 
@@ -43,7 +37,7 @@ def Controller_main(arduino):
         while(True):
             time.sleep(1)
             # Open the CSV file
-            with open('lastReading.csv', 'r') as file:
+            with open('../Control_Automation/Data_Management/lastReading.csv', 'r') as file:
                 # Create a CSV reader
                 reader = csv.reader(file)
 
@@ -63,7 +57,7 @@ def Controller_main(arduino):
 
             else:
                 # Start PID controller
-                PID.PID(arduino,4)
+                PID.PID(arduino, 4)
 
             # set pre-Values
             preSteam = steam

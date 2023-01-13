@@ -131,7 +131,7 @@ void loop()
     uint16_t read_water_temp;
     double temp_water;
     read_water_temp = analogRead(A1);
-    temp_water = (double) ((read_water_temp * (3.3 / 4095.0)) - 0.05)*100.0;
+    temp_water = (double) ((read_water_temp * (3.3 / 4095.0)) + 0.55)*100.0;
 
   //Serial.println(calibration_V);
     // Leer el tiempo en microsegundos desde el arranque del arduino

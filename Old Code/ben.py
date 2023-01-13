@@ -1,14 +1,5 @@
-import streamlit as st
-import bookingManager as BM
-import streamlit_authenticator as stauth
-import REE_API as API_data
-from collections import namedtuple
-import datetime
-import math
-import pandas as pd
-import numpy as np
-import plost                # this package is used to create plots/charts within streamlit
-from PIL import Image
+from Booking_System import bookingManager as BM
+
 
 def update_bookings ():
     schedule = BM.loads_matrix()

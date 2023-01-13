@@ -5,15 +5,11 @@ Created on Friday 6th January 2023
 @authors: José Luz, Bendiks Herbold
 """
 # importing libraries
-import serial
-import datetime as dt
-import re
 import csv
 import time
 
-import HelperFunc
-import REE_API as RAPI
-import coldStart
+from Controller import coldStart
+
 
 def relayControlTest(arduino):
     try:
@@ -26,7 +22,7 @@ def relayControlTest(arduino):
         while(True):
             time.sleep(1)
             # Open the CSV file
-            with open('lastReading.csv', 'r') as file:
+            with open('../Data_Management/lastReading.csv', 'r') as file:
                 # Create a CSV reader
                 reader = csv.reader(file)
 

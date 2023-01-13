@@ -1,12 +1,6 @@
 import Controller as CON
-import Data_Management as DM
-import threading
+from Data_Management import Data_Management as DM, HelperFunc
 import serial
-import datetime as dt
-import re
-import HelperFunc
-import asyncio
-import time
 
 arduino = serial.Serial(str(HelperFunc.get_ESP32_port()), 115200, timeout=3)
 

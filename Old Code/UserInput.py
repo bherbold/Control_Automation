@@ -1,7 +1,5 @@
 import threading
-import tkinter
 
-import HelperFunc
 import csv
 
 # int_line_edit_ui.py
@@ -100,7 +98,7 @@ class UnserInputWindow(QDialog):
     # --------------------------------------------------------------------
     def buttonAction(self):
 
-        with open('UserTemperature.csv', 'w', newline='') as csvFile:
+        with open('../Data_Management/UserTemperature.csv', 'w', newline='') as csvFile:
             # Create a CSV reader
             writer = csv.writer(csvFile)
             writer.writerow([min(self.sdiv.getValue(),52)])

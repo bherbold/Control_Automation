@@ -1,13 +1,12 @@
 # import requests library
 import requests
-import json
 # import plotting library
 #import matplotlib
 #import matplotlib.pyplot as plt
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 #Helper Functions
-from HelperFunc import handle_response_code
+from Data_Management.HelperFunc import handle_response_code
 
 def get_real_price_now ():
     """

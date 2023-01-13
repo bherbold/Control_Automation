@@ -5,15 +5,14 @@ Created on Wed Nov 13 13:54:24 2019
 @authors: Ingrid, Cristian, Marc - CITCEA
 """
 # importing libraries
-import serial
 import datetime as dt
 import re
 import csv
 import threading
 
-import HelperFunc
-import REE_API as RAPI
-import bookingManager as BM
+from Data_Management import REE_API as RAPI
+from Booking_System import bookingManager as BM
+
 
 # Writing the base class 'Thread'
 class AsyncWrite(threading.Thread):
@@ -44,7 +43,7 @@ def dataManagement(arduino):
     # try-except-finally loop for data acquisition
     try:
         row = ["TimeStamp","ON/OFF", "Power_W", "Current", "Sauna Temperature", "Humidity", "Steam", "Water Temperature", "Cost", "Price_EUR_kWh", "T_set"]
-        with open('DataLogger.csv', 'w', newline='') as csvFile:
+        with open('../Control_Automation/Data_Management/DataLogger.csv', 'w', newline='') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerow(row)
             csvFile.close()
@@ -63,7 +62,7 @@ def dataManagement(arduino):
             # Get the latest Booking Schedule
             T_set = BM.update_bookings(now.hour, 50, 47, 40)
 
-            with open('UserTemperature.csv', 'w') as file:
+            with open('../Control_Automation/Data_Management/UserTemperature.csv', 'w') as file:
                 row = [T_set]
                 writer = csv.writer(file)
                 writer.writerow(row)
@@ -99,12 +98,12 @@ def dataManagement(arduino):
                 row = [now, float(onOff),float(power), float(current), float(sauna_temp), float(sauna_humidity), float(steam), float(water_temp),
                        float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[0]), float(RAPI.calCosts(float(power)/1000,priceList,timeDiff)[1]),T_set]
                 # save reading row into the csv file. File needs to be open with "a" (append) mode.
-                with open('DataLogger.csv', 'a', newline='') as csvFile:
+                with open('../Control_Automation/Data_Management/DataLogger.csv', 'a', newline='') as csvFile:
                     writer = csv.writer(csvFile)
                     writer.writerow(row)
                     csvFile.close()
                     #print(row)
-                with open('lastReading.csv', 'w', newline='') as csvFile:
+                with open('../Control_Automation/Data_Management/lastReading.csv', 'w', newline='') as csvFile:
                     writer = csv.writer(csvFile)
                     writer.writerow(row)
                     csvFile.close()

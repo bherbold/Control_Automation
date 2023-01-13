@@ -14,7 +14,7 @@ def coldStart (arduino, startTemp, startupTime):
     started = False
 
     # Open the CSV file
-    with open('lastReading.csv', 'r') as file:
+    with open('../Control_Automation/Data_Management/lastReading.csv', 'r') as file:
         # Create a CSV reader
         reader = csv.reader(file)
         # Iterate over the rows of the CSV
@@ -29,7 +29,7 @@ def coldStart (arduino, startTemp, startupTime):
 
 
         # Open the CSV file
-        with open('lastReading.csv', 'r') as file:
+        with open('../Control_Automation/Data_Management/lastReading.csv', 'r') as file:
             # Create a CSV reader
             reader = csv.reader(file)
 

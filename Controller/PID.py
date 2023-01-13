@@ -5,15 +5,9 @@ Created on Friday 6th January 2023
 @authors: José Luz, Bendiks Herbold
 """
 # importing libraries
-import serial
-import datetime as dt
-import re
 import csv
 import time
 
-import HelperFunc
-import REE_API as RAPI
-import coldStart
 import datetime
 
 
@@ -34,7 +28,7 @@ def PID(arduino, max_on):
 
         time.sleep(1)
 
-        with open('lastReading.csv', 'r') as file:
+        with open('../Control_Automation/Data_Management/lastReading.csv', 'r') as file:
             # Create a CSV reader
             reader = csv.reader(file)
 
@@ -49,7 +43,7 @@ def PID(arduino, max_on):
         while (True):
             time.sleep(1)
             # Open the CSV file
-            with open('lastReading.csv', 'r') as file:
+            with open('../Control_Automation/Data_Management/lastReading.csv', 'r') as file:
                 # Create a CSV reader
                 reader = csv.reader(file)
 
@@ -61,7 +55,7 @@ def PID(arduino, max_on):
                     onOff = float(row[1])
                     water_temp = float(row[7])
 
-            with open('UserTemperature.csv', 'r') as file:
+            with open('../Control_Automation/Data_Management/UserTemperature.csv', 'r') as file:
                 # Create a CSV reader
                 reader = csv.reader(file)
 

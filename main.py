@@ -1,15 +1,6 @@
-import Controller as CON
-import Controller_test as CON_test
-import Controller_main as CON_main
-import Data_Management as DM
-import threading
+from Controller import Controller_main as CON_main
+from Data_Management import Data_Management as DM, HelperFunc
 import serial
-import datetime as dt
-import re
-import HelperFunc
-import UserInput as UI
-
-import time
 
 arduino = serial.Serial(str(HelperFunc.get_ESP32_port()), 115200, timeout=3)
 
