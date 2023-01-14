@@ -4,7 +4,7 @@
 
 The repository presents a smart sauna operation. It includes:
 
-- a PD-Controller (Operates sauna)
+- PD-Controller (Operates sauna)
 - Data Management (Logs and distributes data)
 - Booking Service (Manages bookings)
 - Visualization Dashboard
@@ -12,8 +12,19 @@ The repository presents a smart sauna operation. It includes:
 
 The Electrical Scheme on ESP32 side:
 
+![alt text](Images/electric%2520scheme.png)
 
+The Communication Scheme:
 
+![alt text](Images/Communication%20scheme.png)
+
+The Dataflow:
+
+![alt text](Images/DataFlow_Draft1.png)
+
+The Workflow:
+
+![alt text](Images/Workflow.png)
 
 
 ## Requirements
@@ -30,8 +41,25 @@ To run this program, you will need the following:
 
 To install the dependencies, run the following command:
 
+Within Python virtual environment
+
 `pip install -r requirements.txt
 `
+
+Global installments (For Streamlit servers):
+
+`
+pip install streamlit
+`
+
+`
+pip install streamlit_authenticator
+`
+
+`
+pip install plost 
+`
+
 
 ## Usage
 
@@ -44,12 +72,12 @@ To run the Streamlit applications, open two new terminals and navigate to the di
 
 Booking Service:
 
-`CHANGE
+`streamlit run Booking_System_app.py
 `
 
 Dashboard:
 
-`CHANGE
+`streamlit run dashboard.py
 `
 ## Authors
 

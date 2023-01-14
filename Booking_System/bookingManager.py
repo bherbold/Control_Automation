@@ -1,12 +1,20 @@
-from Data_Management import REE_API
+import numpy as np
+import REE_API
 import os
-import requests
+import seaborn as sb
+import requests 
+import json
 import ast
-import os
-from pathlib import Path
 #import plost
+import pandas as pd
 # import plotting library
+import matplotlib
+import matplotlib.pyplot as plt 
 from datetime import date, datetime, timedelta
+
+"""
+    This file contains all the functions to deal with the schedule of the sauna
+"""
 
 def handle_response_code(response):
     status = response.status_code
@@ -24,45 +32,11 @@ def handle_response_code(response):
     else:
         print('server error')
 
-def get_real_price_day ():
-    # datetime object containing current date and time
-    
-    now = datetime.now()
-
-    # Time formate for REE API
-    nowZero = now - timedelta(hours=now.hour)
-    dt_string_start = nowZero.strftime("%Y/%m/%dT%00:00")
-    endhour = nowZero + timedelta(hours=23)
-    dt_string_end = endhour.strftime("%Y/%m/%dT%H:00")
-    #print("date and time =", dt_string)
-
-    endpoint = 'https://apidatos.ree.es'
-    get_archives = '/en/datos/mercados/precios-mercados-tiempo-real'
-    headers = {'Accept': 'application/json',
-               'Content-Type': 'application/json',
-               'Host': 'apidatos.ree.es'}
-    params = {'start_date': dt_string_start, 'end_date': dt_string_end, 'time_trunc': 'hour'}
-
-    response = requests.get(endpoint + get_archives, headers=headers, params=params)
-
-    handle_response_code(response)
-
-    json = response.json()
-
-    spot_market_prices = json['included'][0]
-    values = spot_market_prices['attributes']['values']
-
-    for t in values:
-        t['datetime'] = datetime.fromisoformat(t['datetime'])
-
-    #print(values)
-    return values
-
 def init_matrix():
     # Initialize an empty list
     daily_schedule = []
     
-    if (str(datetime.now()).split(' ')[1].split(':')[0]) < 17:
+    if int(str(datetime.now()).split(' ')[1].split(':')[0]) < 17:
         date_ = (date.today()).strftime("%Y-%m-%d")
     else:
         date_ = (date.today() + timedelta(days=1)).strftime("%Y-%m-%d")
@@ -77,14 +51,14 @@ def init_matrix():
             daily_schedule.append({"price": prices[i], "emissions": 0, "booked": -1, "client": '', "mode": ''})
 
     # Checks if there is a bookings file already
-    if os.path.exists('../Control_Automation/Data_Management/bookings_file.txt'):
+    if os.path.exists('../Data_Management/bookings_file.txt'):
         # Check if the file is empty
-        if os.path.getsize('../Control_Automation/Data_Management/bookings_file.txt') > 0:
+        if os.path.getsize('../Data_Management/bookings_file.txt') > 0:
             # If not empty, read data
             return loads_matrix()
         else:
             # If empty, write data
-            with open('../Control_Automation/Data_Management/bookings_file.txt', 'w') as f:
+            with open('../Data_Management/bookings_file.txt', 'w') as f:
                 f.write(date_ + "\n")
                 # Write each dictionary to the file on a new line
                 for hour in daily_schedule:
@@ -93,7 +67,7 @@ def init_matrix():
             return daily_schedule
     else:
         # If there is no file, create and write it
-        with open('../Control_Automation/Data_Management/bookings_file.txt', 'w') as f:
+        with open('../Data_Management/bookings_file.txt', 'w') as f:
             f.write(date_ + "\n")
             # Write each dictionary to the file on a new line
             for hour in daily_schedule:
@@ -103,28 +77,23 @@ def init_matrix():
         
 def loads_matrix():
     daily_schedule = []
-    # Open file and create data structure to store it
-    with open('../Control_Automation/Data_Management/bookings_file.txt', 'r') as f:
+    # Open file and store schedule 
+    with open('../Data_Management/bookings_file.txt', 'r') as f:
         content = f.read()
     
     for i, row in enumerate(content.splitlines()):
         if i != 0:
             daily_schedule.append(ast.literal_eval(row))
-            
+    
+    # return the schedule contained in bookings_file.txt  
     return daily_schedule
-
-def checks_availability(schedule):
-    
-    available_hours = []
-    
-    for i in range(len(schedule)):
-        
-        if schedule[i]["booked"] == 0:
-            available_hours.append(i)
-    
-    return available_hours
     
 def creates_booking(schedule, username, hour, mode):
+    
+    """ 
+    Function creates new booking with username, hour and desired mode and updates schedule and 
+    bookings_file.txt
+    """
     
     schedule[hour]["client"] = username
     schedule[hour]["booked"] = 1
@@ -136,6 +105,10 @@ def creates_booking(schedule, username, hour, mode):
 
 def cancel_booking(hour, schedule):
     
+    """ 
+    Function deletes a booking based on the hour and updates schedule and bookings_file.txt
+    """
+    
     schedule[hour]["client"] = ''
     schedule[hour]["booked"] = 0
     schedule[hour]["mode"] = ''
@@ -145,62 +118,14 @@ def cancel_booking(hour, schedule):
     return schedule
 
 def updates_file(schedule):
-    
-    with open('../Control_Automation/Data_Management/bookings_file.txt', 'w') as f:
+    """
+    Function overwrites bookings_file.txt with the updated schedule received as argument
+    """
+    with open('../Data_Management/bookings_file.txt', 'w') as f:
         f.write(datetime.now().strftime("%Y-%m-%d") + "\n")
         # Write each dictionary to the file on a new line
         for hour in schedule:
             f.write(str(hour) + '\n')
-  
-def loads_usernames():
-    username_list = []
-    
-    with open('usernames.txt', 'r') as f:
-        content = f.read()
-    
-    for i, row in enumerate(content.splitlines()):
-        username_list.append(row.split(', ')[0])
-    
-    return username_list
-  
-def checks_password(username, password):
-    
-    with open('usernames.txt', 'r') as f:
-        content = f.read()
-    
-    for i, row in enumerate(content.splitlines()):
-        if row.split(', ')[0] == username:
-            if row.split(', ')[1] == password:
-                return 1
-            else:
-                return 0
-
-def add_user(username, password, email):
-    with open('usernames.txt', 'a') as f:
-        f.write(username + ', ' + password + ', ' + email + '\n')
-
-def check_bookings_username(schedule, username):
-    
-    bookings = []
-    
-    for i, hour in enumerate(schedule):
-        if hour['client'] == username:
-           bookings.append(i) 
-           
-    return bookings
-
-def validate_email(email):
-    
-    if '@' not in email:
-        print('here 1')
-        return 0
-
-    if '.com' not in email and '.pt' not in email and '.es' not in email and '.it' not in email and '.ge' not in email and '.at' not in email:
-        print('here 2')
-        return 0
-    
-    return 1
-
 
 def update_bookings(bookingHour, regTemp, ecoTemp, noBookTemp):
     schedule = loads_matrix()
@@ -211,6 +136,23 @@ def update_bookings(bookingHour, regTemp, ecoTemp, noBookTemp):
             mode_array.append(regTemp)
         elif hour['mode'] == 'Eco':
             mode_array.append(ecoTemp)
+        else:
+            mode_array.append(noBookTemp)
+
+    return mode_array[bookingHour, ]
+    # print(mode_array)
+
+def update_bookings(bookingHour, regTemp, ecoTemp, noBookTemp):
+    schedule = loads_matrix()
+    mode_array = []
+
+    for hour in schedule:
+        if hour['mode'] == 'Regular50':
+            mode_array.append(50)
+        elif hour['mode'] == 'Regular47':
+            mode_array.append(47)
+        elif hour['mode'] == 'Eco':
+            mode_array.append(48)
         else:
             mode_array.append(noBookTemp)
 

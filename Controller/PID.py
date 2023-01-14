@@ -63,6 +63,16 @@ def PID(arduino, max_on):
                     # Get the value from the second column (index 1)
                     T_set = float(row[0])
 
+            if T_set == 48: # eco mode (48 is actually not the temperature-> It varies between 47 and 50)
+                print("Eco Mode")
+
+                if sauna_temp >= 50:
+                    T_set = 47
+                elif sauna_temp <= 47:
+                    T_set = 50
+                else:
+                    print("Regular Mode")
+
             # PID Start
             T_sauna_diff = T_set - sauna_temp
             t_now = datetime.datetime.now()
@@ -103,21 +113,7 @@ def PID(arduino, max_on):
             pre_water_temp = water_temp
             t_pre = t_now
 
-            # test going up and down between 50 and 47
-            """   
-            if sauna_temp >= 49.9:
-                with open('UserTemperature.csv', 'w') as file:
-                    row = [47]
-                    writer = csv.writer(file)
-                    writer.writerow(row)
-                    file.close()
-            elif sauna_temp <= 47:
-                with open('UserTemperature.csv', 'w') as file:
-                    row = [50]
-                    writer = csv.writer(file)
-                    writer.writerow(row)
-                    file.close()
-            """
+
 
     # handling KeyboardInterrupt by the end-user (CTRL+C)
     except KeyboardInterrupt:
