@@ -11,7 +11,7 @@ import csv
 import threading
 
 from Data_Management import REE_API as RAPI
-from Booking_System import bookingManager as BM
+from Booking_System import bookingManagerMain as BM
 
 
 # Writing the base class 'Thread'

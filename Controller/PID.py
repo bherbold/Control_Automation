@@ -70,8 +70,8 @@ def PID(arduino, max_on):
                     T_set = 47
                 elif sauna_temp <= 47:
                     T_set = 50
-                else:
-                    print("Regular Mode")
+            else:
+                print("Regular Mode")
 
             # PID Start
             T_sauna_diff = T_set - sauna_temp

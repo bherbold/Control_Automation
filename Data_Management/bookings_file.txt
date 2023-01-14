@@ -19,7 +19,7 @@
 {'price': 61.32, 'emissions': 221082.979, 'booked': 0, 'client': '', 'mode': ''}
 {'price': 61.48, 'emissions': 185917.164, 'booked': 0, 'client': '', 'mode': ''}
 {'price': 63.15, 'emissions': 92041.414, 'booked': 1, 'client': 'jose_luz', 'mode': 'Regular 47'}
-{'price': 68.4, 'emissions': 133342.816, 'booked': 0, 'client': '', 'mode': ''}
+{'price': 68.4, 'emissions': 133342.816, 'booked': 0, 'client': '', 'mode': 'Eco'}
 {'price': 85.45, 'emissions': 158911.925, 'booked': -1, 'client': '', 'mode': ''}
 {'price': 86.19, 'emissions': 164630.721, 'booked': -1, 'client': '', 'mode': ''}
 {'price': 63.54, 'emissions': 130644.605, 'booked': -1, 'client': '', 'mode': ''}
