@@ -22,9 +22,9 @@ double n_transf = 1000;                  // Number of turns between the primary 
 // Variables to track the passing of one milissecond
 unsigned long time_now = 0, time_int = 0;
 unsigned long time_ant = 0, difTime = 0, act_time = 0, reading_time = 0, dif_reading_time = 0;
-
+ 
 // Define the variables to calculate the RMS for one cycle of the grid
-double quadratic_sum_rms = 0.0;         // Variable that stores the accumulated value of the quadratic sum of the instant current
+double quadratic_sum_rms = 0.0;         // Variable that stores the accumulated value of the quadratic sum of the instant current  
 const int sampleDuration = 20;          // Sample duration of the data retrieval (20 milissenconds = 1/50 Hz)
 int quadratic_sum_counter = 0;          // Counter for the number of readings retrieved
 double freq = 50.0;                     // Grid frequency
@@ -36,8 +36,8 @@ int contador_acumulado = 0;             // Contador de cuantas veces se ha acumu
 double calibration_V = 0;
 
 double suma_v;                          // Acumulador de valores RMS para hacer la media
-int read_voltage;                       // Auxiliary variable to store the value of each voltage read from the sensor
-int voltages_read_sum = 0;              // Variable to store the sum of the voltages read from the sensor
+int read_voltage;                       // Auxiliary variable to store the value of each voltage read from the sensor 
+int voltages_read_sum = 0;              // Variable to store the sum of the voltages read from the sensor 
 int counter = 0;                        // Number of voltages read from the sensor
 int counter_v;
 
@@ -52,11 +52,11 @@ double temp_water_media = 0.0;
 //=================================================================================================================================
 // Function SETUP: Function that only executes once, at the beginning of runtime
 //=================================================================================================================================
-void setup()
+void setup() 
 {
   // Inicializar el periferico del puerto serie para poder imprimir datos a una velocidad de 115200 bits por segundos
   Serial.begin(115200);
-
+  
   // Initialize the relay controller OFF
   pinMode(D2, OUTPUT);
   digitalWrite(D2, LOW);
@@ -68,18 +68,18 @@ void setup()
 
   read_voltage = 0;
   counter = 0;
-
+  
   while(time_int<2000) // 2 seconds to calibrate voltage
   {
     // Read voltage from Arduino pin -> value ranges between 0 and 4095
     read_voltage = analogRead(SensorPin);
-
+    
     voltages_read_sum = voltages_read_sum + read_voltage;
     counter = counter + 1;
 
     reading_time = micros();
 
-    // Keep track of the 2 sec calibration time
+    // Keep track of the 2 sec calibration time 
     time_int = reading_time - time_ant;
   }
 
@@ -105,19 +105,19 @@ void setup()
 void loop()
 {
 
-  if (Serial.available() > 0)
+  if (Serial.available() > 0) 
   {
     comando = Serial.read();
-
-    if (comando == 'H')
+    
+    if (comando == 'H') 
     {
       digitalWrite(D2, HIGH);
-      kettle_mode = 1;
+      kettle_mode = 0;
     }
-    else if (comando == 'L')
+    else if (comando == 'L') 
     {
       digitalWrite(D2, LOW);
-      kettle_mode = 0;
+      kettle_mode = 1;
     }
   }
 
@@ -131,7 +131,7 @@ void loop()
     uint16_t read_water_temp;
     double temp_water;
     read_water_temp = analogRead(A1);
-    temp_water = (double) ((read_water_temp * (3.3 / 4095.0)) + 0.55)*100.0;
+    temp_water = (double) ((read_water_temp * (3.3 / 4095.0)) + 0.05)*100.0;
 
   //Serial.println(calibration_V);
     // Leer el tiempo en microsegundos desde el arranque del arduino
@@ -143,21 +143,21 @@ void loop()
 
     //Serial.println(difTime);
 
-    if (difTime >= 1000 && counter_v > 0)
+    if (difTime >= 1000 && counter_v > 0) 
     {
         // Actualizar el registro de tiempo con el tiempo actual
         time_ant = act_time + (difTime - 1000);
-
+    
         double V_media = suma_v / counter_v;
-
-
-        // Calibration of the midpoint tension
+        
+        
+        // Calibration of the midpoint tension        
 
         double d_V = V_media - calibration_V;
 
         // Calculation of the instantaneous current
         double Iinst =  n_transf*d_V/Rshunt;
-
+        
         // Calculation the quadratic sum I
         quadratic_sum_rms += ((Iinst*Iinst) * 0.001);
         // Calculation the Steam average value
@@ -175,18 +175,18 @@ void loop()
 //=============================================================================================================================================================
 // FILTER
 // Cogemos n muestras de la medida para filtrar el ruido del adc
-
+ 
     if (dif_reading_time >= 100){
       reading_time = act_time;
-
+      
       // Leer del ADC las tensiones del tensor (devuelve datos entre 0 y 4095, el ADC del ESP32 es de 12 bits)
       int ADC_sensor = analogRead(SensorPin);
       double t = double(ADC_sensor/4095);
       //Serial.println(ADC_sensor);
-
+      
       // Translate ADC values to tension values
       double V_sens = ADC_sensor * 3.3 / 4095.0;
-
+    
       suma_v += V_sens;
 
       steam_sum += steam_percentage;
@@ -200,17 +200,17 @@ void loop()
     // EAH CYCLE OF THE GRID (20 ACCUMULATED VALUES), CALCULATE RMS
     if (quadratic_sum_counter >= sampleDuration)
     {
-
+        
       //=================================================================================================================================
       // TO DO: Compute the square root in order to calculate the RMS of the last cicle
       //double Vrms = V_sens/counter_v;
       double Irms = sqrt(freq * quadratic_sum_rms);
       //=================================================================================================================================
-
+      
         // Reiniciar valores de acumulación para calcular el RMS del último ciclo de red
         quadratic_sum_counter = 0;
         quadratic_sum_rms = 0;
-
+    
         // Acumular valores de corriente RMS para calcular el promedio de RMS
         corriente_acumulada += Irms;
         contador_acumulado++;
@@ -218,11 +218,11 @@ void loop()
     else;
 
     // CADA 250 CICLOS DE RED (aproximadamente 5 segundos), CALCULAR EL RMS PROMEDIO
-    if (contador_acumulado >= sampleAverage)
+    if (contador_acumulado >= sampleAverage) 
     {
         // Calcular la media de la corriente RMS promediado
         double Irms_filt = corriente_acumulada / ((double)contador_acumulado);
-
+        
         // Reiniciar valores de acumulación para calcular el RMS promediado
         corriente_acumulada = 0;
         contador_acumulado = 0;
@@ -238,20 +238,20 @@ void loop()
         if (!isnan(dht.getTempAndHumidity().temperature) && !isnan(dht.getTempAndHumidity().humidity)){
           measurement = dht.getTempAndHumidity();
         }
-
+        
         Serial.print(measurement.temperature);
         Serial.print(" ");
-
+        
         Serial.print(measurement.humidity);
         Serial.print(" ");
 
         Serial.print(steam_media); //print the value to serial
         Serial.print(" ");
-
+        
         Serial.println(temp_water_media);
-
+        
         // DISPLAY
-
+        
         lcd.setCursor(0,0);
         lcd.print("T:");
         lcd.print(measurement.temperature);
