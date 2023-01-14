@@ -2,6 +2,18 @@
 
 ## Project Description
 
+The repository presents a smart sauna operation. It includes:
+
+- a PD-Controller (Operates sauna)
+- Data Management (Logs and distributes data)
+- Booking Service (Manages bookings)
+- Visualization Dashboard
+- ESP32 Operations (Executes the commands and processes data as an edge device).
+
+The Electrical Scheme on ESP32 side:
+
+
+
 
 
 ## Requirements
@@ -23,11 +35,22 @@ To install the dependencies, run the following command:
 
 ## Usage
 
-To run the program, navigate to the directory where the program is located and run the following command:
+To run the python program (PD-Controller and Data Management), navigate to the directory where the program is located and run the following command:
 
 `python main.py
 `
 
+To run the Streamlit applications, open two new terminals and navigate to the directory where the program is located and run the following command:
+
+Booking Service:
+
+`CHANGE
+`
+
+Dashboard:
+
+`CHANGE
+`
 ## Authors
 
       Bendiks Herbold
